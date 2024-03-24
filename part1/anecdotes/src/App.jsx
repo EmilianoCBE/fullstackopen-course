@@ -12,20 +12,44 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
+  // const votesArray = [0, 0, 0, 0, 0 ,0 ,0 ,0]
+
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState({
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0
+  })
 
   const handleClick = () => {
-    const maxNumberAnecdote = 8
-    setSelected(Math.round(Math.random() * maxNumberAnecdote))
-    console.log(selected)
+    const maxNumberAnecdote = 7
+    let newSelected = Math.round(Math.random() * maxNumberAnecdote)
+    setSelected(newSelected)
+  }
+
+  const handleVote = () => {
+    const copyVotes = {...votes}
+    copyVotes[selected] += 1
+    setVotes(copyVotes)
   }
 
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
       {anecdotes[selected]}
-      <button onClick={handleClick} style={{width: '150px'}}>
-        Change anecdote
-      </button>
+      <p>Has {votes[selected]} votes</p>
+      <div style={{display: 'flex', gap: '8px'}}>
+        <button onClick={handleVote} style={{width: '50px'}}>
+          Vote
+        </button>
+        <button onClick={handleClick} style={{width: '150px'}}>
+          Change anecdote
+        </button>
+      </div>
     </div>
   )
 }
