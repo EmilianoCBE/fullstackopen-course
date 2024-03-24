@@ -38,8 +38,11 @@ const App = () => {
     setVotes(copyVotes)
   }
 
+  const maxVotesIndex = Object.keys(votes).reduce((a, b) => votes[a] > votes[b] ? a : b)
+
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <p>Has {votes[selected]} votes</p>
       <div style={{display: 'flex', gap: '8px'}}>
@@ -50,6 +53,9 @@ const App = () => {
           Change anecdote
         </button>
       </div>
+      <h2>Anecdote with most votes</h2>
+      {anecdotes[maxVotesIndex]}
+      <p>Has {votes[maxVotesIndex]} votes</p>
     </div>
   )
 }
