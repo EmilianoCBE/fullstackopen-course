@@ -2,42 +2,54 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas' },
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const handleNewNameChange = (e) => {
     setNewName(e.target.value)
   }
 
-  const addName = (e) => {
+  const handleNewNumberChange = (e) => {
+    setNewNumber(e.target.value)
+  }
 
-    
+  const add = (e) => {
 
     e.preventDefault()
     const personObject = {
       name: newName,
+      phone: newNumber
     }
 
-    if(persons.filter(person => person.name === personObject.name)){
+    if(persons.some(person => person.name === personObject.name)){
       alert(`${newName} is already added to phonebook`)
       setNewName('')
+      setNewNumber('')
       return
     }
 
     setPersons(persons.concat(personObject))
     setNewName('')
+    setNewNumber('')
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+      <form onSubmit={add}>
         <div>
           name: 
           <input 
             value={newName}
             onChange={handleNewNameChange}
+          />
+        </div>
+        <div>number: 
+          <input 
+            value={newNumber}
+            onChange={handleNewNumberChange}
           />
         </div>
         <div>
@@ -49,7 +61,7 @@ const App = () => {
         {
           persons.map((person) => (
             <li key={person.name}>
-              {person.name}
+              {person.name} {person.phone}
             </li>
           ))
         }
