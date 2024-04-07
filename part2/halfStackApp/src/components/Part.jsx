@@ -1,7 +1,7 @@
-export const Part = ({part, exercises}) => {
+export const Part = ({partName, partExercises}) => {
   return (
     <>
-      <p>{part} {exercises}</p>
+      <p>{partName} {partExercises}</p>
     </>
   )
 }
