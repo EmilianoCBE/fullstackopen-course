@@ -4,15 +4,16 @@ export const Persons = ({ filter, persons, deletePerson }) => {
       {filter !== ""
         ? persons.map((person) =>
             person.name.toLowerCase().includes(filter) ? (
-              <li key={person.id}>
-                {person.name} {person.number}
+              <li className='person' key={person.id}>
+                <span>{person.name} {person.number} </span>
+                <button onClick={() => deletePerson(person.id)}> Delete </button>
               </li>
             ) : (
               ""
             )
           )
         : persons.map((person) => (
-              <li key={person.id}>
+              <li className='person' key={person.id}>
                 <span>{person.name} {person.number} </span>
                 <button onClick={() => deletePerson(person.id)}> Delete </button>
               </li>

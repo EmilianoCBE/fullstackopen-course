@@ -4,12 +4,28 @@ import { PersonForm } from "./components/PersonForm";
 import { Persons } from "./components/Persons";
 import personService from "./services/persons";
 import axios from "axios";
+import { Notification } from "./components/Notification";
+
+const Footer = () => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+  }
+  return (
+    <div style={footerStyle}>
+      <br />
+      <em>Note app, Department of Computer Science, University of Helsinki 2024</em>
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [successMessage, setSuccessMessage] = useState('success')
 
   useEffect(() => {
     personService
@@ -40,9 +56,6 @@ const App = () => {
     };
 
     const personExist = persons.some(person => person.name === personObject.name)
-    //const filteredId = filteredPerson.map(person => person.id)[0]
-
-    //console.log(filteredPerson)
 
     if (personExist) {
       confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
@@ -50,22 +63,18 @@ const App = () => {
       const filteredPerson = persons.find(person => person.name === personObject.name)
       const filteredId = filteredPerson.id
       const updatePerson = { ...filteredPerson, number: newNumber} 
-      console.log(updatePerson)
-      // const filteredId = filteredPerson.map(person => person.id)[0]
-      // const person = persons.find(person => person.id === filteredId)
-      // const changeNumber = { ...person, number: newNumber}
-      //console.log(changeNumber)
       axios
         .put(`${url}/${filteredId}`, updatePerson)
         .then(response => {
           setPersons(persons.map(person => person.id !== filteredId ? person : response.data))
+          setSuccessMessage(
+            `Updated '${response.name}'`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
-      // personService
-      //   .updatePerson(filteredId, personObject)
-      //   .then(response => {
-      //     console.log(response)
-      //     //setPersons(persons.map(person => person.name !== filteredPerson.name ? person : response.data))
-      //   })
+      
       setNewName("");
       setNewNumber("");
       return;
@@ -75,6 +84,12 @@ const App = () => {
       .addPerson(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson));
+        setSuccessMessage(
+          `Added '${returnedPerson.name}'`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
         setNewName("");
         setNewNumber("");
       })
@@ -95,6 +110,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage}/>
+
       <Filter value={filter} onChange={handleFilter} />
 
       <h2>Add a new contact</h2>
@@ -111,6 +128,9 @@ const App = () => {
         persons={persons}
         deletePerson={deletePerson}
       />
+
+      <Footer />
+
     </div>
   );
 };
