@@ -39,8 +39,33 @@ const App = () => {
       number: newNumber,
     };
 
-    if (persons.some((person) => person.name === personObject.name)) {
-      alert(`${newName} is already added to phonebook`);
+    const personExist = persons.some(person => person.name === personObject.name)
+    //const filteredId = filteredPerson.map(person => person.id)[0]
+
+    //console.log(filteredPerson)
+
+    if (personExist) {
+      confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      const url = "http://localhost:3001/persons"
+      const filteredPerson = persons.find(person => person.name === personObject.name)
+      const filteredId = filteredPerson.id
+      const updatePerson = { ...filteredPerson, number: newNumber} 
+      console.log(updatePerson)
+      // const filteredId = filteredPerson.map(person => person.id)[0]
+      // const person = persons.find(person => person.id === filteredId)
+      // const changeNumber = { ...person, number: newNumber}
+      //console.log(changeNumber)
+      axios
+        .put(`${url}/${filteredId}`, updatePerson)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== filteredId ? person : response.data))
+        })
+      // personService
+      //   .updatePerson(filteredId, personObject)
+      //   .then(response => {
+      //     console.log(response)
+      //     //setPersons(persons.map(person => person.name !== filteredPerson.name ? person : response.data))
+      //   })
       setNewName("");
       setNewNumber("");
       return;
@@ -57,7 +82,6 @@ const App = () => {
   };
 
   const deletePerson = (id) => {
-    console.log(`This is the id ${id}`)
     const url = "http://localhost:3001/persons"
     const personToDelete = `${url}/${id}`
     axios

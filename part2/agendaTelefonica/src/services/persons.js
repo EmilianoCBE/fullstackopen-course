@@ -12,11 +12,12 @@ const addPerson = (newObject) => {
   return request.then(response => response.data)
 }
 
-const deletePerson = (id) => {
-  return axios.delete(`${baseUrl}/${id}`)
+const updatePerson = (id, newObject)  => {
+  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  return request.then(response => response.data)
 }
 
-export default { getAllPersons, addPerson, deletePerson }
+export default { getAllPersons, addPerson, updatePerson }
 
 // axios.post("http://localhost:3001/persons", personObject).then((response) => {
 //   setPersons(persons.concat(response.data));
