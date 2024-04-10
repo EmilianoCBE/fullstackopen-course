@@ -1,10 +1,10 @@
-export const Persons = ({filter, persons}) => {
+export const Persons = ({ filter, persons, deletePerson }) => {
   return (
-    <ul>
+    <ul style={{'listStyle': 'none'}}>
       {filter !== ""
         ? persons.map((person) =>
             person.name.toLowerCase().includes(filter) ? (
-              <li key={person.name}>
+              <li key={person.id}>
                 {person.name} {person.number}
               </li>
             ) : (
@@ -12,9 +12,10 @@ export const Persons = ({filter, persons}) => {
             )
           )
         : persons.map((person) => (
-            <li key={person.name}>
-              {person.name} {person.number}
-            </li>
+              <li key={person.id}>
+                <span>{person.name} {person.number} </span>
+                <button onClick={() => deletePerson(person.id)}> Delete </button>
+              </li>
           ))}
     </ul>
   );

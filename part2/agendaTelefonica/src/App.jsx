@@ -3,6 +3,7 @@ import Filter from "./components/Filter";
 import { PersonForm } from "./components/PersonForm";
 import { Persons } from "./components/Persons";
 import personService from "./services/persons";
+import axios from "axios";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -16,7 +17,7 @@ const App = () => {
       .then(initialPersons => {
         setPersons(initialPersons);
       });
-  }, []);
+  }, [persons]);
   
 
   const handleNewNameChange = (e) => {
@@ -46,7 +47,7 @@ const App = () => {
     }
 
     personService
-      .addPersons(personObject)
+      .addPerson(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
@@ -54,6 +55,18 @@ const App = () => {
       })
 
   };
+
+  const deletePerson = (id) => {
+    console.log(`This is the id ${id}`)
+    const url = "http://localhost:3001/persons"
+    const personToDelete = `${url}/${id}`
+    axios
+      .delete(personToDelete)
+      .then(response => {
+        const person = response.data
+        confirm(`Delete ${person.name} ?`)
+      })
+  }
 
   return (
     <div>
@@ -69,7 +82,11 @@ const App = () => {
         onChangeNumber={handleNewNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons filter={filter} persons={persons} />
+      <Persons 
+        filter={filter} 
+        persons={persons}
+        deletePerson={deletePerson}
+      />
     </div>
   );
 };
