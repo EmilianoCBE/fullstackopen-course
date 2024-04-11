@@ -5,6 +5,7 @@ import { Persons } from "./components/Persons";
 import personService from "./services/persons";
 import axios from "axios";
 import { Notification } from "./components/Notification";
+import { NotificationError } from "./components/NotificationError";
 
 const Footer = () => {
   const footerStyle = {
@@ -25,7 +26,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
-  const [successMessage, setSuccessMessage] = useState('success')
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('some error happened...')
 
   useEffect(() => {
     personService
@@ -105,12 +107,24 @@ const App = () => {
         const person = response.data
         confirm(`Delete ${person.name} ?`)
       })
+      .catch(error => {
+        // const person = response.data
+        console.log(error)
+        // setErrorMessage(
+        //   `Person '${person.name}' was already removed from server`
+        // )
+        // setTimeout(() => {
+        //   setErrorMessage(null)
+        // }, 5000)
+        // setPersons(persons.filter(person => person.id !== filteredId))
+      })
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
       <Notification message={successMessage}/>
+      <NotificationError message={errorMessage} />
 
       <Filter value={filter} onChange={handleFilter} />
 
