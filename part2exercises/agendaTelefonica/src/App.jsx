@@ -124,7 +124,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={successMessage}/>
-      <NotificationError message={errorMessage} />
+      {/* <NotificationError message={errorMessage} /> */}
 
       <Filter value={filter} onChange={handleFilter} />
 
