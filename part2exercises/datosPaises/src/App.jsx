@@ -16,8 +16,9 @@ function App() {
       .get(`${URL_API}/api/all`)
       .then(response => {
         const apiCountries = response.data.map(country => country.name.common)
-        const filteredCountries = apiCountries.filter(filteredCountry => filteredCountry.includes(nameCountry))
+        const filteredCountries = apiCountries.filter(filteredCountry => filteredCountry.toUpperCase().includes(nameCountry.toUpperCase()))
         setCountries(filteredCountries)
+        
         if(filteredCountries.length === 1){
           const countryData = response.data.find(country => country.name.common === filteredCountries[0])
           setCountryDetail(countryData)
