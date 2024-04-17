@@ -8,7 +8,7 @@ function App() {
   const URL_API = 'https://studies.cs.helsinki.fi/restcountries'
   const [nameCountry, setNameCountry] = useState('')
   const [countries, setCountries] = useState([])
-  const [countryDetail, setCountryDetail] = useState({})
+  const [countryDetail, setCountryDetail] = useState(null)
 
   useEffect(() => {
     if(nameCountry !== ''){
@@ -18,6 +18,10 @@ function App() {
         const apiCountries = response.data.map(country => country.name.common)
         const filteredCountries = apiCountries.filter(filteredCountry => filteredCountry.includes(nameCountry))
         setCountries(filteredCountries)
+        if(filteredCountries.length === 1){
+          const countryData = response.data.find(country => country.name.common === filteredCountries[0])
+          setCountryDetail(countryData)
+        }
       })
     }
   }, [nameCountry])
@@ -34,7 +38,7 @@ function App() {
       {
         countries.length <= 10 ?
           countries.length == 1 ?
-            <CountryDetail />
+            <CountryDetail detail={countryDetail}/>
           : 
           countries.map(country => 
             <CountryList country={country} key={country}/>
