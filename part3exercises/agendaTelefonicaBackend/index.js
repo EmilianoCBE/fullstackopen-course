@@ -3,7 +3,14 @@ const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+const logPostData = (req, res, next) => {
+  if (req.method === 'POST') {
+    console.log('Request body:', req.body);
+  }
+  next();
+};
 app.use(morgan('tiny'))
+app.use(logPostData)
 
 let persons = [
   { 
